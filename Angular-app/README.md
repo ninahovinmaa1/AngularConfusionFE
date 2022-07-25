@@ -1,3 +1,8 @@
+
+To start a simple json server to simulate backend REST API server, navigate to folder json-server `cd json-server` and run `json-server --watch db.json -d 2000`
+
+To start frontend navigate to Angular-app `cd Angular-app` and run `npm start`. Then navigate to localhost:4200 on a browser
+
 # ConFusion
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.5.
