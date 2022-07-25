@@ -34,6 +34,11 @@
                 <h5 mat-line>-- {{comment.author}} {{comment.date | date}}</h5>
             </mat-list-item>
         </mat-list>
+        <div [hidden]="dish">
+            <mat-spinner>
+                <h4>Loading ... Please Wait</h4>
+            </mat-spinner>
+        </div>
     </div>
 
 </div>
