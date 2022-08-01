@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
     @Inject('BaseURL') public BaseURL: any) { }
 
   ngOnInit(): void {
-    this.dishService.getFeturedDish()
+    this.dishService.getFeaturedDish()
       .subscribe((dish) => this.dish = dish)
       
     this.promotionService.getFeaturedPromotion()
