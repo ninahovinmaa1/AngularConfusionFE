@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, Inject } from '@angular/core';
+import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { Dish } from '../shared/dish';
 import { Params, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
@@ -15,13 +15,14 @@ import { Comment } from '../shared/comment';
 })
 export class DishdetailComponent implements OnInit {
 
-  dish: Dish;
+  dish: Dish | null;
   dishIds: string[];
   prev: string;
   next: string;
   commentForm: FormGroup;
   comment: Comment;
   errMess: string;
+  dishcopy: Dish | null;
   @ViewChild('cform') commentFormDirective: any;
 
   formErrors: any = {
@@ -49,19 +50,20 @@ export class DishdetailComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.dishService.getDishIds().subscribe({
-      next: dishIds => this.dishIds = dishIds,
-      error: errmess => this.errMess = errmess 
-    });
+    this.dishService.getDishIds()
+      .subscribe(dishIds => this.dishIds = dishIds);
+
     this.route.params
       .pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
       .subscribe({
         next: dish => { 
           this.dish = dish; 
+          this.dishcopy = dish;
           this.setPrevNext(dish.id); 
         },
-        error: errmess => this.errMess = errmess
+        error: errmess => this.errMess = <any>errmess
       })
+
     this.createForm();
   }
 
@@ -82,7 +84,8 @@ export class DishdetailComponent implements OnInit {
       author: ['', [Validators.required, Validators.minLength(2)]],
     })
     this.commentForm.valueChanges
-      .subscribe(data => this.onValueChanged(data))
+      .subscribe(data => this.onValueChanged(data));
+    this.onValueChanged(); //reset validation messages
   }
 
   onValueChanged(data?: any){
@@ -109,6 +112,20 @@ export class DishdetailComponent implements OnInit {
 
   onSubmit() {
     this.comment = this.commentForm.value;
+    this.comment.date = new Date().toISOString();
+    this.dishcopy?.comments.push(this.comment);
+    this.dishService.putDish(this.dishcopy!)
+      .subscribe({
+        next: dish => {
+          this.dish = dish;
+          this.dishcopy = dish;
+        },
+        error: errmess => { 
+          this.dish = null;
+          this.dishcopy = null;
+          this.errMess = <any>errmess
+        }
+      })
     //set form back to pristine
     this.commentFormDirective.resetForm();
     //reset values to default
@@ -118,6 +135,5 @@ export class DishdetailComponent implements OnInit {
       author: '',
     })
   }
-  
 
 }
