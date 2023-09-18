@@ -1,6 +1,3 @@
-![preview of app in browser](C:\Users\NinaHovinmaa\Downloads\2023-09-18 18_54_32-ConFusion.png)
-
-
 To spin-up this app locally, in a terminal
 
 cd AngularConfusionFE
