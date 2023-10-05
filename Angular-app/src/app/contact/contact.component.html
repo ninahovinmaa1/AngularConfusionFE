@@ -1,6 +1,4 @@
-<div class="container"
-    fxLayout="column"
-    fxLayoutGap="10px">
+<div class="container" fxLayout="column" fxLayoutGap="10px">
 
     <div fxFlex>
         <div>
@@ -10,7 +8,7 @@
     </div>
 
     <div fxFlex>
-        <h3>Location Information</h3> 
+        <h3>Location Information</h3>
         <div fxLayout="column" fxLayout.gt-sm="row">
             <div fxFlex="50" fxFlexOffset="20px">
                 <h4>Our Address</h4>
@@ -20,14 +18,14 @@
                     HONG KONG<br>
                     <i class="fa fa-phone"></i>: +852 1234 5678<br>
                     <i class="fa fa-fax"></i>: +852 8765 4321<br>
-                    <i class="fa fa-envelope"></i>: 
-                            <a href="mailto:confusion@food.net">confusion@food.net</a>
+                    <i class="fa fa-envelope"></i>:
+                    <a href="mailto:confusion@food.net">confusion@food.net</a>
                 </address>
                 <p></p>
                 <div>
-                <a mat-raised-button href="tel:+85212345678"><i class="fa fa-phone"></i> Call</a>
-                <a mat-raised-button><i class="fa fa-skype"></i> Skype</a>
-                <a mat-raised-button href="mailto:confusion@food.net"><i class="fa fa-envelope-o"></i> Email</a>
+                    <a mat-raised-button href="tel:+85212345678"><i class="fa fa-phone"></i> Call</a>
+                    <a mat-raised-button><i class="fa fa-skype"></i> Skype</a>
+                    <a mat-raised-button href="mailto:confusion@food.net"><i class="fa fa-envelope-o"></i> Email</a>
                 </div>
             </div>
             <div fxFlex="40">
@@ -38,7 +36,6 @@
 
     <div fxFlex fxFlexOffset="20px" class="form-size">
         <h3>Send us your feedback</h3>
-        <p>{{ feedbackForm.value | json }} {{feedbackForm.status | json}}</p>
         <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" #fform="ngForm">
             <p>
                 <mat-form-field class="half-width">
@@ -77,9 +74,24 @@
                     <textarea matInput formControlName="message" placeholder="Your Feedback" rows=12></textarea>
                 </mat-form-field>
             </p>
-            <button type="submit" mat-button class="background-primary text-floral-white" [disabled]="feedbackForm.invalid">
+            <button type="submit" mat-button class="background-primary text-floral-white"
+                [disabled]="feedbackForm.invalid">
                 Submit
             </button>
         </form>
+        <div [hidden]="showForm || submitted" [@expand]>
+            <h3>Submitting Form</h3>
+            <mat-spinner></mat-spinner>
+        </div>
+        <div *ngIf="submitted" [@expand]>
+            <h3>Your Submission</h3>
+            <p>First Name: {{submitted.firstname}}</p>
+            <p>Last Name: {{submitted.lastname}}</p>
+            <p>Tel. Number: {{submitted.telnum}}</p>
+            <p>Email: {{submitted.email}}</p>
+            <p>Contact You?: {{submitted.agree}}</p>
+            <p>How?: {{submitted.contacttype}}</p>
+            <p>Feedback: {{submitted.message}}</p>
+        </div>
     </div>
 </div>
